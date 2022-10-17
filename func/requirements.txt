@@ -1,0 +1,9 @@
+asgiref==3.5.2
+boto3==1.21.21
+flask==2.2.2
+heimdall-client==2.3.1
+httpx==0.23.0
+khonshu==0.1.1
+persephone-client==2.0.0
+pytz==2022.4
+strenum==0.4.8
