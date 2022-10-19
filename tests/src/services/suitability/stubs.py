@@ -3,7 +3,12 @@ from khonshu import CustomerAnswers, CustomerSuitability, KhonshuStatus
 
 stub_unique_id = "db43b7ff-54b2-483c-afab-f686c7eef782"
 stub_mongodb_suitability_template = {
-    "suitability": {"score": 1.0, "profile": 4, "submission_date": "date", "suitability_version": 13}
+    "suitability": {
+        "score": 1.0,
+        "profile": 4,
+        "submission_date": "date",
+        "suitability_version": 13,
+    }
 }
 
 
@@ -23,13 +28,14 @@ stub_customer_answers = CustomerAnswers(
             {"question_order_id": 6, "answer_option_id": 3},
             {"question_order_id": 7, "answer_option_id": 4},
             {"question_order_id": 8, "answer_option_id": 1},
-
         ]
     }
 )
 
 
-stub_customer_suitability_calculated = CustomerSuitability(profile=1, version=13, score=0.6215)
+stub_customer_suitability_calculated = CustomerSuitability(
+    profile=1, version=13, score=0.6215
+)
 
 stub_suitability_model = SuitabilityModel(
     unique_id=stub_unique_id,
@@ -37,5 +43,9 @@ stub_suitability_model = SuitabilityModel(
     customer_suitability=stub_customer_suitability_calculated,
 )
 
-stub_khonshu_response = (True, KhonshuStatus.SUCCESS, stub_customer_suitability_calculated)
+stub_khonshu_response = (
+    True,
+    KhonshuStatus.SUCCESS,
+    stub_customer_suitability_calculated,
+)
 stub_khonshu_response_failure = (False, KhonshuStatus.INTERNAL_SERVER_ERROR, None)

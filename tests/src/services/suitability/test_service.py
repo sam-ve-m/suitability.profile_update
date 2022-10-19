@@ -5,11 +5,16 @@ from .stubs import (
     StubPymongoResults,
     stub_customer_answers,
     stub_khonshu_response,
-    stub_khonshu_response_failure
+    stub_khonshu_response_failure,
 )
 from func.src.domain.exceptions.repositories.exception import ErrorOnUpdateUser
-from func.src.domain.exceptions.services.exception import ErrorCalculatingCustomerSuitability
-from func.src.domain.exceptions.transports.exception import InvalidOnboardingCurrentStep
+from func.src.domain.exceptions.services.exception import (
+    ErrorCalculatingCustomerSuitability,
+)
+from func.src.domain.exceptions.transports.exception import (
+    InvalidOnboardingCurrentStep,
+    NotAuthorizedToUpdate,
+)
 from func.src.services.suitability import SuitabilityService
 
 # Standards
@@ -38,12 +43,14 @@ async def test_when_update_customer_suitability_fail_then_raises(mock_update_one
 )
 @pytest.mark.asyncio
 async def test_when_update_customer_suitability_with_success_then_mock_was_called(
-    mock_update_one
+    mock_update_one,
 ):
     await SuitabilityService._SuitabilityService__save_customer_suitability_data(
         unique_id=stub_unique_id, suitability=stub_mongodb_suitability_template
     )
-    mock_update_one.assert_called_once_with(unique_id=stub_unique_id, suitability=stub_mongodb_suitability_template)
+    mock_update_one.assert_called_once_with(
+        unique_id=stub_unique_id, suitability=stub_mongodb_suitability_template
+    )
 
 
 @patch(
@@ -52,9 +59,13 @@ async def test_when_update_customer_suitability_with_success_then_mock_was_calle
 )
 @pytest.mark.asyncio
 @pytest.mark.asyncio
-async def test_when_update_customer_suitability_with_success_then_return_true(mock_update_one):
-    result = await SuitabilityService._SuitabilityService__save_customer_suitability_data(
-        unique_id=stub_unique_id, suitability=stub_mongodb_suitability_template
+async def test_when_update_customer_suitability_with_success_then_return_true(
+    mock_update_one,
+):
+    result = (
+        await SuitabilityService._SuitabilityService__save_customer_suitability_data(
+            unique_id=stub_unique_id, suitability=stub_mongodb_suitability_template
+        )
     )
 
     assert result is True
@@ -118,27 +129,41 @@ async def test_when_get_customer_suitability_from_khonshu_is_not_success_then_ra
 async def test_when_create_suitability_with_success_then_return_true(
     mock_khonshu_response, mock_audit_response, mock_save_suitability
 ):
-    result = await SuitabilityService.set_in_customer(unique_id=stub_unique_id, customer_answers=stub_customer_answers)
+    result = await SuitabilityService.set_in_customer(
+        unique_id=stub_unique_id, customer_answers=stub_customer_answers
+    )
 
     assert result is True
 
 
 @pytest.mark.asyncio
 @patch(
-    "func.src.services.suitability.OnboardingSteps.get_user_current_step",
-    return_value="suitability",
+    "func.src.services.suitability.OnboardingSteps.get_customer_steps",
+    return_value={"suitability": True, "finished": True},
 )
 async def test_when_current_step_correct_then_return_true(mock_onboarding_steps):
-    result = await SuitabilityService.validate_current_onboarding_step(jwt="123")
+    result = await SuitabilityService.check_if_able_to_update(jwt="123")
 
     assert result is True
 
 
 @pytest.mark.asyncio
 @patch(
-    "func.src.services.suitability.OnboardingSteps.get_user_current_step",
-    return_value="finished",
+    "func.src.services.suitability.OnboardingSteps.get_customer_steps",
+    return_value={"suitability": False, "finished": False},
 )
-async def test_when_current_step_invalid_then_return_raises(mock_onboarding_steps):
+async def test_when_suitability_step_is_false_then_return_raises(mock_onboarding_steps):
     with pytest.raises(InvalidOnboardingCurrentStep):
-        await SuitabilityService.validate_current_onboarding_step(jwt="123")
+        await SuitabilityService.check_if_able_to_update(jwt="123")
+
+
+@pytest.mark.asyncio
+@patch(
+    "func.src.services.suitability.OnboardingSteps.get_customer_steps",
+    return_value={"suitability": True, "finished": False},
+)
+async def test_when_suitability_step_is_true_and_finished_is_false_then_return_raises(
+    mock_onboarding_steps,
+):
+    with pytest.raises(NotAuthorizedToUpdate):
+        await SuitabilityService.check_if_able_to_update(jwt="123")

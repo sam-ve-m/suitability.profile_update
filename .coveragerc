@@ -2,6 +2,7 @@
 omit =
     */main.py
     func/src/infrastructures/*
+    func/src/domain/exceptions/*
     func/src/repositories/*
     tests/*
     */__init__.py

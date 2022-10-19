@@ -1,5 +1,8 @@
 # Jormungandr - Onboarding
-from func.src.domain.exceptions.services.exception import ErrorOnDecodeJwt, ErrorOnGetUniqueId
+from func.src.domain.exceptions.services.exception import (
+    ErrorOnDecodeJwt,
+    ErrorOnGetUniqueId,
+)
 from func.src.services.jwt import JwtService
 from tests.src.services.jwt.stubs import (
     stub_heimdall_response,
