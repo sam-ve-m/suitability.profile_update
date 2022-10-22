@@ -1,0 +1,55 @@
+include:
+- ./func/*
+kind: ArchiveUploadSpec
+name: func-hb9t
+
+---
+apiVersion: fission.io/v1
+kind: Package
+metadata:
+  creationTimestamp: null
+  name: suita-profile-update-fn-8e59ce4b-5867-49d4-8c14-c255f3ef763c
+  namespace: default
+spec:
+  deployment:
+    checksum: {}
+  environment:
+    name: suita-profile-update-env
+    namespace: default
+  source:
+    checksum: {}
+    type: url
+    url: archive://func-hb9t
+status:
+  buildstatus: pending
+  lastUpdateTimestamp: "2022-10-19T21:56:12Z"
+
+---
+apiVersion: fission.io/v1
+kind: Function
+metadata:
+  creationTimestamp: null
+  name: suita-profile-update-fn
+  namespace: default
+spec:
+  InvokeStrategy:
+    ExecutionStrategy:
+      ExecutorType: newdeploy
+      MaxScale: 3
+      MinScale: 1
+      SpecializationTimeout: 120
+      TargetCPUPercent: 80
+    StrategyType: execution
+  concurrency: 500
+  environment:
+    name: suita-profile-update-env
+    namespace: default
+  functionTimeout: 60
+  idletimeout: 120
+  package:
+    functionName: main.update_suitability_profile
+    packageref:
+      name: suita-profile-update-fn-8e59ce4b-5867-49d4-8c14-c255f3ef763c
+      namespace: default
+  requestsPerPod: 10000
+  resources: {}

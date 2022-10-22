@@ -1,0 +1,11 @@
+[run]
+omit =
+    */main.py
+    func/src/infrastructures/*
+    func/src/domain/exceptions/*
+    func/src/repositories/*
+    tests/*
+    */__init__.py
+
+# command to run
+# pytest --cov-report term-missing --cov-config=.coveragerc --cov=func -v
