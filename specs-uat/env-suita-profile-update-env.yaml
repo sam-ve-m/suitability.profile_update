@@ -82,4 +82,10 @@ spec:
               value: "0.7899"
             - name: FOURTH_PROFILE_RANGE
               value: "1.0000"
+            - name: DEVICE_SECURITY_DEVICE_ID_URL
+              value: "http://router.fission.svc.cluster.local/security/deviceid"
+            - name: DEVICE_SECURITY_DECRYPT_DEVICE_INFO_URL
+              value: "http://router.fission.svc.cluster.local/security/deviceid/deviceinfo/decrypt"
+            - name: DEFAULT_PRECISION_VALUE
+              value: 1
   version: 3

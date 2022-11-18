@@ -1,4 +1,3 @@
-# Jormungandr - Suitability
 from ...enums.code import InternalCode
 
 

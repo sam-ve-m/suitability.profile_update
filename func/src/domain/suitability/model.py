@@ -1,9 +1,9 @@
-# Standards
 from datetime import datetime
 
-# Third party
 from khonshu import CustomerAnswers, CustomerSuitability
 from pytz import timezone
+
+from func.src.domain.models.device_info import DeviceInfo
 
 
 class SuitabilityModel:
@@ -12,6 +12,7 @@ class SuitabilityModel:
         customer_suitability: CustomerSuitability,
         unique_id: str,
         customer_answers: CustomerAnswers,
+        device_info: DeviceInfo,
     ):
         self.customer_questions_with_answers = customer_answers.dict().get("answers")
         self.profile = customer_suitability.profile
@@ -19,6 +20,7 @@ class SuitabilityModel:
         self.unique_id = unique_id
         self.version = customer_suitability.version
         self.submission_date = datetime.now(tz=timezone("America/Sao_Paulo"))
+        self.device_info = device_info
 
     async def get_audit_suitability_template(self) -> dict:
         audit_msg = {
@@ -27,6 +29,8 @@ class SuitabilityModel:
             "version": self.version,
             "score": self.score,
             "profile": self.profile,
+            "device_info": self.device_info.device_info,
+            "device_id": self.device_info.device_id,
         }
         return audit_msg
 

@@ -1,4 +1,7 @@
-# Jormungandr - Onboarding
+from unittest.mock import patch
+
+import pytest
+
 from func.src.domain.exceptions.services.exception import (
     ErrorOnDecodeJwt,
     ErrorOnGetUniqueId,
@@ -9,12 +12,6 @@ from tests.src.services.jwt.stubs import (
     stub_heimdall_response_failure,
     stub_heimdall_with_no_content,
 )
-
-# Standards
-from unittest.mock import patch
-
-# Third party
-import pytest
 
 
 @pytest.mark.asyncio
