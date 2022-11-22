@@ -1,12 +1,10 @@
-# Jormungandr-Onboarding
-from ...domain.enums.types import QueueTypes
-from ...domain.exceptions.transports.exception import ErrorOnSendAuditLog
-from ...domain.suitability.model import SuitabilityModel
-
-# Third party
 from decouple import config
 from etria_logger import Gladsheim
 from persephone_client import Persephone
+
+from ...domain.enums.types import QueueTypes
+from ...domain.exceptions.transports.exception import ErrorOnSendAuditLog
+from ...domain.suitability.model import SuitabilityModel
 
 
 class Audit:

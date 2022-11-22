@@ -1,3 +1,4 @@
+from func.src.domain.models.device_info import DeviceInfo
 from func.src.domain.suitability.model import SuitabilityModel
 from khonshu import CustomerAnswers, CustomerSuitability, KhonshuStatus
 
@@ -36,11 +37,12 @@ stub_customer_answers = CustomerAnswers(
 stub_customer_suitability_calculated = CustomerSuitability(
     profile=1, version=13, score=0.6215
 )
-
+stub_device_info = DeviceInfo({"precision": 1}, "")
 stub_suitability_model = SuitabilityModel(
     unique_id=stub_unique_id,
     customer_answers=stub_customer_answers,
     customer_suitability=stub_customer_suitability_calculated,
+    device_info=stub_device_info,
 )
 
 stub_khonshu_response = (

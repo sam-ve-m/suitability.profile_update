@@ -1,4 +1,11 @@
-# Jormungandr - Onboarding
+from http import HTTPStatus
+
+from etria_logger import Gladsheim
+from flask import request, Response
+from khonshu import CustomerAnswers
+from pydantic import ValidationError
+
+from func.src.transports.device_info.transport import DeviceSecurity
 from src.domain.exceptions.base.base_exceptions import (
     ServiceException,
     RepositoryException,
@@ -10,26 +17,24 @@ from src.domain.response.model import ResponseModel
 from src.services.jwt import JwtService
 from src.services.suitability import SuitabilityService
 
-# Standards
-from http import HTTPStatus
-
-# Third party
-from etria_logger import Gladsheim
-from flask import request, Response
-from khonshu import CustomerAnswers
-from pydantic import ValidationError
-
 
 async def update_suitability_profile() -> Response:
     try:
         jwt = request.headers.get("x-thebes-answer")
+        encoded_device_info = request.headers.get("x-device-info")
         raw_customer_answers = request.json
+
         customer_answers_validated = CustomerAnswers(**raw_customer_answers)
         unique_id = await JwtService.decode_jwt_and_get_unique_id(jwt=jwt)
+        device_info = await DeviceSecurity.get_device_info(encoded_device_info)
         await SuitabilityService.check_if_able_to_update(jwt=jwt)
+
         success = await SuitabilityService.set_in_customer(
-            unique_id=unique_id, customer_answers=customer_answers_validated
+            unique_id=unique_id,
+            customer_answers=customer_answers_validated,
+            device_info=device_info,
         )
+
         response = ResponseModel(
             success=success,
             message="Suitability score and profile created successfully",

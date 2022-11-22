@@ -1,4 +1,3 @@
-# Standards
 from enum import IntEnum
 
 
@@ -14,3 +13,4 @@ class InternalCode(IntEnum):
     DATA_ALREADY_EXISTS = 98
     DATA_NOT_FOUND = 99
     INTERNAL_SERVER_ERROR = 100
+    API_ERROR = 101
