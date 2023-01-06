@@ -1,35 +1,35 @@
 include:
-- ./func/*
+- fission.py
 kind: ArchiveUploadSpec
-name: func-hb9t
+name: fission-py-aTne
 
 ---
 apiVersion: fission.io/v1
 kind: Package
 metadata:
   creationTimestamp: null
-  name: suita-profile-update-fn-8e59ce4b-5867-49d4-8c14-c255f3ef763c
+  name: acc-suit-quest-update-fn-2214efde-3fb1-4d9c-86c3-f081f41c37c1
   namespace: default
 spec:
   deployment:
     checksum: {}
+    type: url
+    url: archive://fission-py-aTne
   environment:
-    name: suita-profile-update-env
+    name: acc-suit-quest-update-env
     namespace: default
   source:
     checksum: {}
-    type: url
-    url: archive://func-hb9t
 status:
-  buildstatus: pending
-  lastUpdateTimestamp: "2022-10-19T21:56:12Z"
+  buildstatus: none
+  lastUpdateTimestamp: "2023-01-06T16:48:05Z"
 
 ---
 apiVersion: fission.io/v1
 kind: Function
 metadata:
   creationTimestamp: null
-  name: suita-profile-update-fn
+  name: acc-suit-quest-update-fn
   namespace: default
 spec:
   InvokeStrategy:
@@ -38,18 +38,24 @@ spec:
       MaxScale: 3
       MinScale: 1
       SpecializationTimeout: 120
-      TargetCPUPercent: 80
+      TargetCPUPercent: 0
+      hpaMetrics:
+      - resource:
+          name: cpu
+          target:
+            averageUtilization: 80
+            type: Utilization
+        type: Resource
     StrategyType: execution
   concurrency: 500
   environment:
-    name: suita-profile-update-env
+    name: acc-suit-quest-update-env
     namespace: default
   functionTimeout: 60
   idletimeout: 120
   package:
-    functionName: main.update_suitability_profile
     packageref:
-      name: suita-profile-update-fn-8e59ce4b-5867-49d4-8c14-c255f3ef763c
+      name: acc-suit-quest-update-fn-2214efde-3fb1-4d9c-86c3-f081f41c37c1
       namespace: default
   requestsPerPod: 10000
   resources: {}
