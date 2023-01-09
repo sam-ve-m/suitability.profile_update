@@ -21,14 +21,6 @@ class StubPymongoResults:
 stub_customer_answers = CustomerAnswers(
     **{
         "answers": [
-            {"question_order_id": 1, "answer_option_id": 1},
-            {"question_order_id": 2, "answer_option_id": 2},
-            {"question_order_id": 3, "answer_option_id": 3},
-            {"question_order_id": 4, "answer_option_id": 4},
-            {"question_order_id": 5, "answer_option_id": 2},
-            {"question_order_id": 6, "answer_option_id": 3},
-            {"question_order_id": 7, "answer_option_id": 4},
-            {"question_order_id": 8, "answer_option_id": 1},
         ]
     }
 )

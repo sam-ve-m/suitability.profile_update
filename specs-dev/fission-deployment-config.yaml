@@ -4,4 +4,4 @@
 apiVersion: fission.io/v1
 kind: DeploymentConfig
 name: suitability-profile-update
-uid: 5eaf6f06-20a9-404e-885c-3b9fb6db94ec
+uid: e9dbe334-d797-4ba5-be51-83888cbe781c
